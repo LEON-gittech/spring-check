@@ -82,7 +82,7 @@ public class TestController {
         HashOperations hashOperations = redisTemplate.opsForHash();
         for(Takes takes: takesList){
             System.out.println(takes.getStudentId());
-            hashOperations.put(scheduleId, takes.getStudentId(), "0");
+            hashOperations.put(String.valueOf(scheduleId), takes.getStudentId(), "0");
         }
         // 加入redis 根据scheduleId构建两个 一个是学号 一个是状态
         long delay = 10 * 60 * 1000;
@@ -90,10 +90,7 @@ public class TestController {
         myScheduler.saveAbsence(delay, scheduleId);
 
         return R.success("");
-
     }
-
-
 
 
 }

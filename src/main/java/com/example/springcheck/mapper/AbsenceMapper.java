@@ -1,6 +1,7 @@
 package com.example.springcheck.mapper;
 
 import com.example.springcheck.dto.AbsenceDTO;
+import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
@@ -34,4 +35,19 @@ public interface AbsenceMapper extends BaseMapper<Absence> {
     @Select("select student_id as id, u.name as name, start_time as week, course_title as courseName from absence a join user u on u.id = a.student_id join schedule s on a.schedule_id = s.id " +
             "where course_id = ${courseId}")
     List<AbsenceDTO> getAbsence(@Param(value = "courseId") String courseId);
+
+    String querySql3 = "SELECT\n" +
+            "\tuu.`name` AS name,\n" +
+            "\tuu.id AS studentId,\n" +
+            "\taa.id AS approveId \n" +
+            "FROM\n" +
+            "\t`absence` aa\n" +
+            "\tLEFT JOIN `schedule` ss ON aa.schedule_id = ss.id\n" +
+            "\tLEFT JOIN `user` uu ON aa.student_id = uu.id \n" +
+            "WHERE\n" +
+            "\tss.course_id = #{ew2}";
+
+    @Select(querySql3)
+    List<ApprovesPlus> getApprovesPlus(@Param("ew2") String courseId);
+
 }

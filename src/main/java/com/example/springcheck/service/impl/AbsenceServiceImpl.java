@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -78,6 +79,22 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
         absence.setType(2);
         lambdaUpdate().update(absence);
         return absence.getId();
+    }
+
+    @Override
+    public void saveMyData(Long scheduleId, Map<String, Object> data) {
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            String stuId = entry.getKey();
+            Integer statue = Integer.parseInt(entry.getValue().toString());
+            if (statue == 0) {
+                Absence absence = new Absence();
+                absence.setStudentId(stuId);
+                absence.setScheduleId(scheduleId);
+                absence.setType(1);
+                baseMapper.insert(absence);
+            }
+
+        }
     }
 
 }

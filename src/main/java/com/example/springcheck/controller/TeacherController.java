@@ -47,4 +47,5 @@ public class TeacherController {
     public GetAbsenceDTO getAbsence(@RequestParam String courseId) {
         return absenceService.getAbsence(courseId);
     }
+
 }

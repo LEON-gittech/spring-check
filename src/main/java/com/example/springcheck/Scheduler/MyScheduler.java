@@ -7,12 +7,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class MyScheduler {
     @Autowired
     private AbsenceService absenceService;
@@ -24,11 +25,10 @@ public class MyScheduler {
     private RedisTemplate redisTemplate;
 
     // 十分钟
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
     public void saveAbsence(long delay, Long scheduleId){
         HashOperations hashOperations = redisTemplate.opsForHash();
         // 先查出内容
-        Map<String, Object> data = hashOperations.entries(scheduleId);
+        Map<String, Object> data = hashOperations.entries(String.valueOf(scheduleId));
         taskScheduler.schedule(()->{
             absenceService.saveMyData(scheduleId, data);
         }, Instant.now().plusMillis(delay));

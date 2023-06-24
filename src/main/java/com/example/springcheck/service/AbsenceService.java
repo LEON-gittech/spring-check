@@ -5,6 +5,7 @@ import com.example.springcheck.entity.Absence;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,6 +21,7 @@ public interface AbsenceService extends IService<Absence> {
     Boolean agree(Long approveId);
 
     Boolean reject(Long approveId);
+
     List<MyApproves> getMyApprovesById(String studentId);
 
     MyApprovePlus getMyApproveById(Long approveId);
@@ -27,4 +29,7 @@ public interface AbsenceService extends IService<Absence> {
     GetAbsenceDTO getAbsence(String courseId);
 
     Long sendApprove(SendApproveDTO dto);
+
+    void saveMyData(Long scheduleId, Map<String, Object> data);
+
 }
