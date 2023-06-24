@@ -13,4 +13,6 @@ public class GetCoursesDTO {
     private String courseTime;
     private String coursePlace;
     private Boolean isCheck;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

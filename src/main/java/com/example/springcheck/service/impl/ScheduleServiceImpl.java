@@ -13,6 +13,9 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -33,10 +36,12 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> i
 
     @Override
     public List<GetCoursesDTO> GetCourses(String teacherId) {
-        var sql = "select * from schedule inner join takes t on " +
-                "schedule.course_id = t.course_id " + "where start_time >= ${monday} and start_time < ${nextMonday}";
-        var courseIds = teachesService.lambdaQuery().eq(Teaches::getTeacherId, teacherId).list();
-        var courses = lambdaQuery().in(Schedule::getCourseId, courseIds).list();
-
+        // 获取本周的开始日期和结束日期
+        LocalDate now = LocalDate.now();
+        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
+        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
+        var result = baseMapper.getCourses(teacherId, startOfWeek, endOfWeek);
+        result.forEach(r -> r.setCourseTime(r.getStartTime() + " - " + r.getEndTime()));
+        return result;
     }
 }
