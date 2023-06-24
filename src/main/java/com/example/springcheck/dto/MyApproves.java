@@ -7,9 +7,9 @@ import java.io.Serializable;
 @Data
 public class MyApproves implements Serializable {
 
-    private Integer permit;
+    private Integer status;
 
-    private String courseTitle;
+    private String courseName;
 
     private Integer approveMonth;
 
