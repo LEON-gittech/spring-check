@@ -27,6 +27,14 @@ import java.util.Optional;
  */
 @Service
 public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> implements AbsenceService {
+    @Override
+    public List<ApprovesPlus> getApprovesById(String courseId) {
+        List<ApprovesPlus> res = baseMapper.getApprovesPlus(courseId);
+        System.out.println(res.toString());
+        return res;
+
+    }
+
     @Autowired
     private UserService userService;
     @Autowired

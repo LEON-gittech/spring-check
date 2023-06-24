@@ -32,4 +32,6 @@ public interface AbsenceService extends IService<Absence> {
 
     void saveMyData(Long scheduleId, Map<String, Object> data);
 
+    List<ApprovesPlus> getApprovesById(String courseId);
+
 }
