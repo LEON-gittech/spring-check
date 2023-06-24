@@ -45,7 +45,7 @@ public class LoginController {
     public R<LoginDto> login(@RequestBody Map body, HttpServletResponse response) {
         String account = body.get("account").toString();
         String password = body.get("password").toString();
-        JSONObject jsonObject = new JSONObject();
+        log.info("hello");
         User user_r = userService.getById(account);
 //       密码校验
 //        if(!password.equals(user_r.getPassword())){
