@@ -70,7 +70,7 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
     public void saveMyData(Long scheduleId, Map<String, Object> data) {
         for(Map.Entry<String, Object> entry: data.entrySet()){
             String stuId = entry.getKey();
-            Integer statue = (Integer) entry.getValue();
+            Integer statue = Integer.parseInt(entry.getValue().toString());
             if(statue == 0){
                 Absence absence = new Absence();
                 absence.setStudentId(stuId);
