@@ -29,10 +29,10 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
          * 设置静态资源映射
          */
         log.info("开始静态资源映射");
-        registry.addResourceHandler("/backend/**")
-                .addResourceLocations("classpath:/backend/");
-        registry.addResourceHandler("/front/**")
-                .addResourceLocations("classpath:/front/");
+//        registry.addResourceHandler("/backend/**")
+//                .addResourceLocations("classpath:/backend/");
+//        registry.addResourceHandler("/front/**")
+//                .addResourceLocations("classpath:/front/");
     }
     /**
      * 扩展MVC的消息转换器
