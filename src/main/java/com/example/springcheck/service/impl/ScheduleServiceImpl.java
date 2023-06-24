@@ -1,6 +1,8 @@
 package com.example.springcheck.service.impl;
 
 import com.example.springcheck.dto.GetCoursesDTO;
+import com.example.springcheck.dto.GetMyCourseDTO;
+import com.example.springcheck.dto.GetMyCoursesDTO;
 import com.example.springcheck.entity.Course;
 import com.example.springcheck.entity.Schedule;
 import com.example.springcheck.entity.Teaches;
@@ -35,7 +37,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> i
     private UserService userService;
 
     @Override
-    public List<GetCoursesDTO> GetCourses(String teacherId) {
+    public List<GetCoursesDTO> getCourses(String teacherId) {
         // 获取本周的开始日期和结束日期
         LocalDate now = LocalDate.now();
         LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
@@ -43,5 +45,27 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> i
         var result = baseMapper.getCourses(teacherId, startOfWeek, endOfWeek);
         result.forEach(r -> r.setCourseTime(r.getStartTime() + " - " + r.getEndTime()));
         return result;
+    }
+
+    @Override
+    public List<GetMyCoursesDTO> getMyCourses(String studentId) {
+        // 获取本周的开始日期和结束日期
+        LocalDate now = LocalDate.now();
+        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
+        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
+        return baseMapper.getMyCourses(studentId, startOfWeek, endOfWeek);
+    }
+
+    @Override
+    public GetMyCourseDTO getMyCourse(String courseId) {
+        var s = lambdaQuery().eq(Schedule::getCourseId, courseId)
+                .one();
+        return GetMyCourseDTO.builder()
+                .courseId(s.getCourseId())
+                .coursePlace(s.getAddress())
+                .courseName(s.getCourseTitle())
+                .startTime(s.getStartTime())
+                .endTime(s.getEndTime())
+                .build();
     }
 }

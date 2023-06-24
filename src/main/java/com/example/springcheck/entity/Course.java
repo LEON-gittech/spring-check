@@ -14,9 +14,7 @@ import lombok.experimental.Accessors;
  * @since 2023-06-24
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class Course implements Serializable {
+public class Course{
 
     private static final long serialVersionUID=1L;
 
@@ -33,7 +31,7 @@ public class Course implements Serializable {
     /**
      * 课程简介
      */
-    private String desc;
+    private String content;
 
 
 }

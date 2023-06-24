@@ -1,20 +1,22 @@
 package com.example.springcheck.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springcheck.dto.GetAbsenceDTO;
 import com.example.springcheck.dto.GetApproveDTO;
 import com.example.springcheck.dto.GetCoursesDTO;
+import com.example.springcheck.entity.Absence;
 import com.example.springcheck.service.AbsenceService;
 import com.example.springcheck.service.ScheduleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/teacher")
+@Slf4j
 public class TeacherController {
     @Autowired
     private AbsenceService absenceService;
@@ -22,7 +24,7 @@ public class TeacherController {
     private ScheduleService scheduleService;
 
     @GetMapping("/getApprove")
-    public GetApproveDTO getApprove(String courseId, Long approveId) {
+    public GetApproveDTO getApprove(@RequestParam Long approveId) {
         return absenceService.getApprove(approveId);
     }
 
@@ -37,12 +39,12 @@ public class TeacherController {
     }
 
     @GetMapping("/getCourses")
-    public List<GetCoursesDTO> getCourses(String teacherId) {
-        return scheduleService.GetCourses(teacherId);
+    public List<GetCoursesDTO> getCourses(@RequestParam String teacherId) {
+        return scheduleService.getCourses(teacherId);
     }
 
     @GetMapping("/getAbsence")
-    public GetAbsenceDTO getAbsence(String courseId) {
+    public GetAbsenceDTO getAbsence(@RequestParam String courseId) {
         return absenceService.getAbsence(courseId);
     }
 }

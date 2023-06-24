@@ -14,9 +14,7 @@ import lombok.experimental.Accessors;
  * @since 2023-06-24
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class Takes implements Serializable {
+public class Takes{
 
     private static final long serialVersionUID=1L;
 

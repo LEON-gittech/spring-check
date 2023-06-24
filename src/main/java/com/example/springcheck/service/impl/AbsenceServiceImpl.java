@@ -1,12 +1,11 @@
 package com.example.springcheck.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.springcheck.dto.GetAbsenceDTO;
-import com.example.springcheck.dto.GetApproveDTO;
-import com.example.springcheck.dto.MyApprovePlus;
-import com.example.springcheck.dto.MyApproves;
+import com.example.springcheck.dto.*;
 import com.example.springcheck.entity.Absence;
+import com.example.springcheck.entity.User;
 import com.example.springcheck.mapper.AbsenceMapper;
 import com.example.springcheck.service.AbsenceService;
 import com.example.springcheck.service.UserService;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -28,22 +28,24 @@ import java.util.List;
 public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> implements AbsenceService {
     @Autowired
     private UserService userService;
+    @Autowired
+    private AbsenceMapper absenceMapper;
 
     @Override
     public GetApproveDTO getApprove(Long approveId) {
-        var approve = getById(approveId);
-        var student = userService.getById(approve.getStudentId());
-        return GetApproveDTO.builder().id(approveId).name(student.getName()).reason(approve.getDesc()).isDecide(approve.getPermit() > 0).imgs(JSON.parseArray(approve.getImgs(), String.class)).build();
+        Absence approve = lambdaQuery().eq(Absence::getId, approveId).one();
+        User student = userService.getById(approve.getStudentId());
+        return GetApproveDTO.builder().id(approveId).name(student.getName()).reason(approve.getReason()).isDecide(approve.getStatus() > 0).imgs(JSON.parseArray(approve.getImgs(), String.class)).build();
     }
 
     @Override
     public Boolean agree(Long approveId) {
-        return lambdaUpdate().eq(Absence::getId, approveId).set(Absence::getPermit, 1).update();
+        return lambdaUpdate().eq(Absence::getId, approveId).set(Absence::getStatus, 1).update();
     }
 
     @Override
     public Boolean reject(Long approveId) {
-        return lambdaUpdate().eq(Absence::getId, approveId).set(Absence::getPermit, 2).update();
+        return lambdaUpdate().eq(Absence::getId, approveId).set(Absence::getStatus, 2).update();
     }
 
     @Override
@@ -65,6 +67,17 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
         var courseList = baseMapper.getAbsence(courseId);
         var courseName = courseList.get(0).getCourseName();
         return GetAbsenceDTO.builder().courseList(courseList).courseName(courseName).build();
+    }
+
+    @Override
+    public Long sendApprove(SendApproveDTO dto) {
+        var absence = new Absence();
+        absence.setStudentId(dto.getStudentId());
+        absence.setStatus(0);
+        absence.setReason(dto.getReason());
+        absence.setType(2);
+        lambdaUpdate().update(absence);
+        return absence.getId();
     }
 
 }

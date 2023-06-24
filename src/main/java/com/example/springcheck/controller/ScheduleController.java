@@ -1,28 +1,28 @@
 package com.example.springcheck.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.api.R;
+import com.example.springcheck.common.R;
+import com.example.springcheck.dto.CourseListDto;
 import com.example.springcheck.entity.Schedule;
-import com.example.springcheck.entity.Takes;
 import com.example.springcheck.mapper.ScheduleMapper;
 import com.example.springcheck.service.ScheduleService;
 import com.example.springcheck.token.UserLoginToken;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author fvres
@@ -38,9 +38,8 @@ public class ScheduleController {
     @Autowired
     private ScheduleMapper scheduleMapper;
 
-    @PostMapping("/getCourseList/{id}")
-    public R<String> getCourseList(@RequestBody Map body){
-        log.info(body.toString());
+    @GetMapping("/getCourseList")
+    public R<CourseListDto> getCourseList(@RequestParam String id) {
         // 获取本周的开始日期和结束日期
         LocalDate now = LocalDate.now();
         LocalDate startOfWeek = now.with(java.time.DayOfWeek.MONDAY);
@@ -48,13 +47,26 @@ public class ScheduleController {
 
         // 构建查询条件
         QueryWrapper<Schedule> queryWrapper = new QueryWrapper<>();
-        queryWrapper.inSql("id", "SELECT s.id FROM schedule s JOIN takes t ON s.course_id = t.course_id WHERE t.student_id = '" + body.get("id") + "'")
+        queryWrapper.inSql("id", "SELECT s.id FROM schedule s JOIN takes t ON s.course_id = t.course_id WHERE t.student_id = '"
+                        + id + "'")
                 .between("start_time", LocalDateTime.of(startOfWeek, LocalTime.MIN), LocalDateTime.of(endOfWeek, LocalTime.MAX));
 
         // 执行查询
         List<Schedule> scheduleList = scheduleMapper.selectList(queryWrapper);
-        log.info(scheduleList.toString());
-        return null;
+        var mapped = scheduleList.stream().map(m -> {
+            var course = new CourseListDto.Course();
+            course.setCourseId(m.getCourseId());
+            course.setCourseName(m.getCourseTitle());
+            course.setCoursePlace(m.getAddress());
+            course.setStartTime(String.valueOf(m.getStartTime()));
+            course.setEndTime(String.valueOf(m.getEndTime()));
+            course.setScheduleId(String.valueOf(m.getId()));
+            course.setCheck(m.getIsFinished());
+            return course;
+        }).collect(Collectors.toList());
+        var result = new CourseListDto();
+        result.setCourseList(mapped);
+        return R.success(result);
     }
 }
 

@@ -2,9 +2,12 @@ package com.example.springcheck.entity;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 
 /**
  * <p>
@@ -15,15 +18,14 @@ import lombok.experimental.Accessors;
  * @since 2023-06-24
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class Absence implements Serializable {
+public class Absence{
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 缺勤条目id
      */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -45,13 +47,13 @@ public class Absence implements Serializable {
     /**
      * 请假事由
      */
-    private String desc;
+    private String reason;
 
     /**
      * 是否批准
      * 0 代表未审批，1 代表通过，2 代表拒绝
      */
-    private Integer permit;
+    private Integer status;
 
     private String imgs;
 

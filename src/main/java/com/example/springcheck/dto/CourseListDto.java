@@ -16,7 +16,7 @@ public class CourseListDto {
         private String startTime;
         private String endTime;
         private String coursePlace;
-        private boolean isCheck;
+        private boolean check;
     }
     List<Course> courseList = new ArrayList<>();
 }

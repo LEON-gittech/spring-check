@@ -15,9 +15,7 @@ import lombok.experimental.Accessors;
  * @since 2023-06-24
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class Schedule implements Serializable {
+public class Schedule{
 
     private static final long serialVersionUID=1L;
 
@@ -54,7 +52,7 @@ public class Schedule implements Serializable {
     /**
      * 是否已经签到完成
      */
-    private Integer isFinished;
+    private Boolean isFinished;
 
 
 }
