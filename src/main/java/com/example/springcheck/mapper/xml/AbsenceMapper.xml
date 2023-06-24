@@ -11,5 +11,6 @@
         from absence aa
             LEFT JOIN `schedule` ss on aa.schedule_id = ss.id
         where aa.student_id= #{studentId};
+
     </select>
 </mapper>
