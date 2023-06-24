@@ -41,12 +41,4 @@ public class TokenUtil {
                 .getRequestAttributes();
         return requestAttributes == null ? null : requestAttributes.getRequest();
     }
-
-    /**
-     * to eliminate errors
-     * @return
-     */
-    public static int getTokenUserId() {
-        return Integer.parseInt(getTokenUser().getId());
-    }
 }

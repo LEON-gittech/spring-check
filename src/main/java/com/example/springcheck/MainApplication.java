@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication  //springboot启动类
 public class MainApplication {
     public static void main(String[] args) {
-
+        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
         SpringApplication.run(MainApplication.class, args);
     }
 }
