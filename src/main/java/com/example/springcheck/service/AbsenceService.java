@@ -1,5 +1,6 @@
 package com.example.springcheck.service;
 
+import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
@@ -19,4 +20,6 @@ public interface AbsenceService extends IService<Absence> {
     List<MyApproves> getMyApprovesById(String studentId);
 
     MyApprovePlus getMyApproveById(Long approveId);
+
+    List<ApprovesPlus> getApprovesById(String courseId);
 }

@@ -1,6 +1,7 @@
 package com.example.springcheck.controller;
 
 import com.example.springcheck.common.R;
+import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.service.AbsenceService;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/apitest")
@@ -31,7 +35,13 @@ public class TestController {
         return R.success(myApproves);
     }
 
-
+    @PostMapping("getApproves")
+    public R getApproves(String courseId){
+        List<ApprovesPlus> approvesPlus = absenceService.getApprovesById(courseId);
+        Map<String, Object> res = new HashMap<>();
+        res.put("approves", approvesPlus);
+        return R.success(res);
+    }
 
 
 }

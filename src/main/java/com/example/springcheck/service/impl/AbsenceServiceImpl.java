@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
@@ -42,5 +43,13 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
         List<String> res = JSON.parseArray(img, String.class);
         myApprovePlus.setImgs(res);
         return myApprovePlus;
+    }
+
+    @Override
+    public List<ApprovesPlus> getApprovesById(String courseId) {
+        List<ApprovesPlus> res = baseMapper.getApprovesPlus(courseId);
+        System.out.println(res.toString());
+        return res;
+
     }
 }
