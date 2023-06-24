@@ -3,14 +3,9 @@ package com.example.springcheck.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springcheck.Scheduler.MyScheduler;
 import com.example.springcheck.common.R;
-import com.example.springcheck.dto.ApprovesPlus;
-import com.example.springcheck.dto.MyApprovePlus;
-import com.example.springcheck.dto.MyApproves;
-import com.example.springcheck.entity.Schedule;
-import com.example.springcheck.entity.Takes;
-import com.example.springcheck.service.AbsenceService;
-import com.example.springcheck.service.ScheduleService;
-import com.example.springcheck.service.TakesService;
+import com.example.springcheck.dto.*;
+import com.example.springcheck.entity.*;
+import com.example.springcheck.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
@@ -34,7 +29,13 @@ public class TestController {
     private ScheduleService scheduleService;
 
     @Autowired
+    private TeachesService teachesService;
+
+    @Autowired
     private TakesService takesService;
+
+    @Autowired
+    private UserService userService;
     @PostMapping("getMyApproves")
     public R getMyApproves(String studentId){
 //        System.out.println(studentId);
@@ -57,9 +58,47 @@ public class TestController {
     }
 
     @PostMapping("notify")
-    public R Notify(String scheduleId){
+    public R Notify(Long scheduleId){
         // 课程信息、未签到名单、comment
-        return null;
+        Notify notify = new Notify();
+        Schedule schedule = scheduleService.getById(scheduleId);
+        notify.setCourseId(schedule.getCourseId());
+        notify.setCourseName(schedule.getCourseTitle());
+        notify.setStartTime(schedule.getStartTime());
+        notify.setEndTime(schedule.getEndTime());
+        notify.setCoursePlace(schedule.getAddress());
+
+        // 查询老师信息
+        LambdaQueryWrapper<Teaches> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Teaches::getCourseId,schedule.getCourseId());
+        String teaId = teachesService.getOne(lambdaQueryWrapper).getTeacherId();
+        User user = userService.getById(teaId);
+        notify.setCourseTeacher(user.getName());
+
+        // 获取未签到的人
+        List<UserDto> list = new ArrayList<>();
+        Map<String, Object> data = redisTemplate.opsForHash().entries(String.valueOf(scheduleId));
+
+        for(Map.Entry<String, Object> entry: data.entrySet()){
+            String stuId = entry.getKey();
+            Integer statue = Integer.parseInt(entry.getValue().toString());
+            if(statue == 0){
+                UserDto userDto = new UserDto();
+                userDto.setId(stuId);
+                userDto.setName(userService.getById(stuId).getName());
+                list.add(userDto);
+            }
+        }
+        notify.setUnSignList(list);
+        String comment = "";
+        for(UserDto userDto:list){
+            comment += userDto.getName();
+            comment += "、";
+        }
+        comment = comment.substring(0, comment.length() - 1);
+        comment+="未签到，请及时通知";
+        notify.setComment(comment);
+        return R.success(notify);
     }
     @Autowired
     private RedisTemplate redisTemplate;
@@ -90,6 +129,36 @@ public class TestController {
         myScheduler.saveAbsence(delay, scheduleId);
 
         return R.success("");
+    }
+
+    @PostMapping("getCheck")
+    public R getCheck(Long scheduleId){
+        Integer signNum = 0;
+        Integer totalNum = 0;
+        List<UserDto> signList = new ArrayList<>();
+        List<UserDto> unSignList = new ArrayList<>();
+        Map<String, Object> data = redisTemplate.opsForHash().entries(String.valueOf(scheduleId));
+
+        for(Map.Entry<String, Object> entry: data.entrySet()){
+            String stuId = entry.getKey();
+            Integer statue = Integer.parseInt(entry.getValue().toString());
+            UserDto userDto = new UserDto();
+            userDto.setId(stuId);
+            userDto.setName(userService.getById(stuId).getName());
+            if(statue == 0){
+                unSignList.add(userDto);
+            }else{
+                signList.add(userDto);
+                signNum++;
+            }
+            totalNum++;
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("signNum", signNum);
+        res.put("totalNum", totalNum);
+        res.put("signList", signList);
+        res.put("unSignList", unSignList);
+        return R.success(res);
     }
 
 
