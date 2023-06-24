@@ -1,7 +1,10 @@
 package com.example.springcheck.service;
 
+import com.example.springcheck.dto.GetCoursesDTO;
 import com.example.springcheck.entity.Schedule;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-06-24
  */
 public interface ScheduleService extends IService<Schedule> {
-
+    List<GetCoursesDTO> GetCourses(String teacherId);
 }

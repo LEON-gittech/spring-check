@@ -1,13 +1,14 @@
 package com.example.springcheck.entity;
 
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author fvres
@@ -18,12 +19,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Absence implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 缺勤条目id
      */
-      private Long id;
+    private Long id;
 
     /**
      * 日程条目id
@@ -37,7 +38,7 @@ public class Absence implements Serializable {
 
     /**
      * 1——旷课
-2——请假
+     * 2——请假
      */
     private Integer type;
 
@@ -48,6 +49,7 @@ public class Absence implements Serializable {
 
     /**
      * 是否批准
+     * 0 代表未审批，1 代表通过，2 代表拒绝
      */
     private Integer permit;
 
