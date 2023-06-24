@@ -1,4 +1,3 @@
-package com.example.springcheck;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -20,7 +19,7 @@ public class CodeGet {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         //gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setOutputDir("E://ggkt_parent_3//service//service_live" + "/src/main/java");
+        gc.setOutputDir("E://ggkt_parent_3//service//service_live"+"/src/main/java");
 
         gc.setServiceName("%sService");    //去掉Service接口的首字母I
         gc.setAuthor("fvres");
@@ -29,17 +28,17 @@ public class CodeGet {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/glkt_live");
+        dsc.setUrl("jdbc:mysql://leonwangblog.xyz:3306/check");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setPassword("Aaaa@1234");
         dsc.setDbType(DbType.MYSQL);
         mpg.setDataSource(dsc);
 
         // 4、包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName("springcheck"); //模块名
-        pc.setParent("com.example.springcheck");
+        pc.setParent("com.example");
         pc.setController("controller");
         pc.setEntity("entity");
         pc.setService("service");
@@ -50,7 +49,7 @@ public class CodeGet {
         StrategyConfig strategy = new StrategyConfig();
 
         // 设置表
-        strategy.setInclude("user", "course", "schedule", "absence", "takes", "teaches");
+        strategy.setInclude("absence","course","schedule","takes","teaches","user");
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 
