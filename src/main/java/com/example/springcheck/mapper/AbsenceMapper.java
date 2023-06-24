@@ -1,5 +1,6 @@
 package com.example.springcheck.mapper;
 
+import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -22,5 +23,9 @@ public interface AbsenceMapper extends BaseMapper<Absence> {
     String querySql = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.student_id= ${ew}";
     @Select(querySql)
     List<MyApproves> getMyApproves(@Param("ew") String studentId);
+
+    String querySql1 = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId, aa.desc as reason, aa.imgs as img from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.id= ${ew1}";
+    @Select(querySql1)
+    MyApprovePlus getMyApprove(@Param("ew1") Long approveId);
 
 }
