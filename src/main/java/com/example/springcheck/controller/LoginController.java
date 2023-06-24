@@ -29,7 +29,6 @@ import java.util.Map;
 //import org.apache.commons.codec.binary.Base64;
 @RestController
 @Slf4j
-@RequestMapping("*")
 public class LoginController {
     @Autowired
     private UserService userService;
@@ -42,12 +41,11 @@ public class LoginController {
     public R<LoginDto> login(@RequestBody Map body, HttpServletResponse response) {
         String account = body.get("account").toString();
         String password = body.get("password").toString();
-        log.info("hello");
         User user_r = userService.getById(account);
 //       密码校验
-//        if(!password.equals(user_r.getPassword())){
-//            return R.login_error();
-//        }
+        if(!password.equals(user_r.getPassword())){
+            return R.login_error();
+        }
         String token = tokenService.getToken(user_r);
         Cookie cookie = new Cookie("token", token);
         cookie.setPath("/");
