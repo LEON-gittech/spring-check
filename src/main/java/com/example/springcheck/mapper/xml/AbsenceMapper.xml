@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springcheck.mapper.AbsenceMapper">
-
+    <select id="getMyApproves" resultType="com.example.springcheck.dto.MyApproves">
+        SELECT
+            aa.permit as status,
+            ss.course_title as courseName,
+            MONTH(ss.start_time) as approveMonth,
+            Day(ss.start_time) as approveDay,
+            aa.id as approveId
+        from absence aa
+            LEFT JOIN `schedule` ss on aa.schedule_id = ss.id
+        where aa.student_id= #{studentId};
+    </select>
 </mapper>
