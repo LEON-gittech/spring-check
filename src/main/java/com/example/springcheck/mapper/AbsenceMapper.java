@@ -1,5 +1,6 @@
 package com.example.springcheck.mapper;
 
+import com.example.springcheck.dto.AbsenceDTO;
 import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
@@ -41,6 +42,10 @@ public interface AbsenceMapper extends BaseMapper<Absence> {
             "\tss.course_id = #{ew2}";
     @Select(querySql3)
     List<ApprovesPlus> getApprovesPlus(@Param("ew2") String courseId);
+
+    @Select("select student_id as id, u.name as name, start_time as week, course_title as courseName from absence a join user u on u.id = a.student_id join schedule s on a.schedule_id = s.id " +
+            "where course_id = ${courseId}")
+    List<AbsenceDTO> getAbsence(@Param(value = "courseId") String courseId);
 
 
 }

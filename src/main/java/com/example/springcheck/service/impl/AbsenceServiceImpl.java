@@ -2,10 +2,7 @@ package com.example.springcheck.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.springcheck.dto.ApprovesPlus;
-import com.example.springcheck.dto.GetApproveDTO;
-import com.example.springcheck.dto.MyApprovePlus;
-import com.example.springcheck.dto.MyApproves;
+import com.example.springcheck.dto.*;
 import com.example.springcheck.entity.Absence;
 import com.example.springcheck.mapper.AbsenceMapper;
 import com.example.springcheck.service.AbsenceService;
@@ -83,5 +80,11 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
             }
 
         }
+    }
+
+    public GetAbsenceDTO getAbsence(String courseId) {
+        var courseList = baseMapper.getAbsence(courseId);
+        var courseName = courseList.get(0).getCourseName();
+        return GetAbsenceDTO.builder().courseList(courseList).courseName(courseName).build();
     }
 }

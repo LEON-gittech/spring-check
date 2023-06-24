@@ -1,9 +1,6 @@
 package com.example.springcheck.service;
 
-import com.example.springcheck.dto.ApprovesPlus;
-import com.example.springcheck.dto.GetApproveDTO;
-import com.example.springcheck.dto.MyApprovePlus;
-import com.example.springcheck.dto.MyApproves;
+import com.example.springcheck.dto.*;
 import com.example.springcheck.entity.Absence;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -31,4 +28,6 @@ public interface AbsenceService extends IService<Absence> {
     List<ApprovesPlus> getApprovesById(String courseId);
 
     void saveMyData(Long scheduleId, Map<String, Object> data);
+
+    GetAbsenceDTO getAbsence(String courseId);
 }
