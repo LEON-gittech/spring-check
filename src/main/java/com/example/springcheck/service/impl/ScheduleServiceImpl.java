@@ -39,10 +39,10 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> i
     @Override
     public List<GetCoursesDTO> getCourses(String teacherId) {
         // 获取本周的开始日期和结束日期
-        LocalDate now = LocalDate.now();
-        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
-        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
-        var result = baseMapper.getCourses(teacherId, startOfWeek, endOfWeek);
+//        LocalDate now = LocalDate.now();
+//        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
+//        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
+        var result = baseMapper.getCourses(teacherId);
         result.forEach(r -> r.setCourseTime(r.getStartTime() + " - " + r.getEndTime()));
         return result;
     }
@@ -50,10 +50,10 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> i
     @Override
     public List<GetMyCoursesDTO> getMyCourses(String studentId) {
         // 获取本周的开始日期和结束日期
-        LocalDate now = LocalDate.now();
-        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
-        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
-        return baseMapper.getMyCourses(studentId, startOfWeek, endOfWeek);
+//        LocalDate now = LocalDate.now();
+//        LocalDateTime startOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.MONDAY), LocalTime.MIN);
+//        LocalDateTime endOfWeek = LocalDateTime.of(now.with(java.time.DayOfWeek.SUNDAY), LocalTime.MAX);
+        return baseMapper.getMyCourses(studentId);
     }
 
     @Override
