@@ -7,11 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Slf4j  // 加上注解可以直接在类中使用log打印日志
 @SpringBootApplication  //springboot启动类
+@EnableScheduling
 @MapperScan(value = "com.example.springcheck.mapper")
 public class MainApplication {
     public static void main(String[] args) {

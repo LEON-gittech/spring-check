@@ -2,12 +2,8 @@ package com.example.springcheck.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.springcheck.dto.GetAbsenceDTO;
+import com.example.springcheck.dto.ApprovesPlus;
 import com.example.springcheck.dto.GetApproveDTO;
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.example.springcheck.dto.MyApprovePlus;
 import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
@@ -19,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -62,5 +59,29 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
         List<String> res = JSON.parseArray(img, String.class);
         myApprovePlus.setImgs(res);
         return myApprovePlus;
+    }
+
+    @Override
+    public List<ApprovesPlus> getApprovesById(String courseId) {
+        List<ApprovesPlus> res = baseMapper.getApprovesPlus(courseId);
+        System.out.println(res.toString());
+        return res;
+
+    }
+
+    @Override
+    public void saveMyData(Long scheduleId, Map<String, Object> data) {
+        for(Map.Entry<String, Object> entry: data.entrySet()){
+            String stuId = entry.getKey();
+            Integer statue = (Integer) entry.getValue();
+            if(statue == 0){
+                Absence absence = new Absence();
+                absence.setStudentId(stuId);
+                absence.setScheduleId(scheduleId);
+                absence.setType(1);
+                baseMapper.insert(absence);
+            }
+
+        }
     }
 }
