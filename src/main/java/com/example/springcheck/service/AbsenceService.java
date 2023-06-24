@@ -1,8 +1,12 @@
 package com.example.springcheck.service;
 
 import com.example.springcheck.dto.GetApproveDTO;
+import com.example.springcheck.dto.MyApprovePlus;
+import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +22,7 @@ public interface AbsenceService extends IService<Absence> {
     Boolean agree(Long approveId);
 
     Boolean reject(Long approveId);
+    List<MyApproves> getMyApprovesById(String studentId);
+
+    MyApprovePlus getMyApproveById(Long approveId);
 }

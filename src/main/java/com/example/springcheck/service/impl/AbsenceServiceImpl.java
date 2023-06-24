@@ -1,10 +1,17 @@
 package com.example.springcheck.service.impl;
 
+<<<<<<<HEAD
 import cn.hutool.jwt.JWT;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springcheck.dto.GetApproveDTO;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.example.springcheck.dto.MyApprovePlus;
+import com.example.springcheck.dto.MyApproves;
 import com.example.springcheck.entity.Absence;
 import com.example.springcheck.entity.Course;
 import com.example.springcheck.entity.User;
@@ -14,8 +21,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springcheck.service.CourseService;
 import com.example.springcheck.service.UserService;
 import lombok.var;
+import com.example.springcheck.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -47,4 +57,18 @@ public class AbsenceServiceImpl extends ServiceImpl<AbsenceMapper, Absence> impl
         return lambdaUpdate().eq(Absence::getId, approveId).set(Absence::getPermit, 2).update();
     }
 
+    @Override
+    public List<MyApproves> getMyApprovesById(String studentId) {
+        List<MyApproves> list = baseMapper.getMyApproves(studentId);
+        return list;
+    }
+
+    @Override
+    public MyApprovePlus getMyApproveById(Long approveId) {
+        MyApprovePlus myApprovePlus = baseMapper.getMyApprove(approveId);
+        String img = myApprovePlus.getImg();
+        List<String> res = JSON.parseArray(img, String.class);
+        myApprovePlus.setImgs(res);
+        return myApprovePlus;
+    }
 }
