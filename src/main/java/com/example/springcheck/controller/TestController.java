@@ -13,16 +13,16 @@ import com.example.springcheck.service.ScheduleService;
 import com.example.springcheck.service.TakesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/apitest")
@@ -50,7 +50,8 @@ public class TestController {
 
     @PostMapping("getApproves")
     public R getApproves(String courseId){
-        List<ApprovesPlus> approvesPlus = absenceService.getApprovesById(courseId);
+//        List<ApprovesPlus> approvesPlus = absenceService.getApprovesById(courseId);
+        List<ApprovesPlus> approvesPlus = null;
         Map<String, Object> res = new HashMap<>();
         res.put("approves", approvesPlus);
         return R.success(res);
