@@ -56,7 +56,7 @@ public class LoginController {
         LoginDto.user user = new LoginDto.user();
         user.setId(account);
         user.setName(user_r.getName());
-        user.setType(user.getType());
+        user.setType(user_r.getType());
         loginDto.setUser(user);
         return R.success(loginDto);
     }

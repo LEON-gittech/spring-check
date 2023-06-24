@@ -22,18 +22,18 @@ import java.util.List;
  */
 @Mapper
 public interface AbsenceMapper extends BaseMapper<Absence> {
-    String querySql = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.student_id= ${ew}";
+    String querySql = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.student_id= #{ew}";
 
     @Select(querySql)
     List<MyApproves> getMyApproves(@Param("ew") String studentId);
 
-    String querySql1 = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId, aa.desc as reason, aa.imgs as img from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.id= ${ew1}";
+    String querySql1 = "select aa.permit as status, ss.course_title as courseName, MONTH(ss.start_time) as approveMonth, Day(ss.start_time) as approveDay, aa.id as approveId, aa.desc as reason, aa.imgs as img from absence aa LEFT JOIN `schedule` ss on aa.schedule_id = ss.id where aa.id= #{ew1}";
 
     @Select(querySql1)
     MyApprovePlus getMyApprove(@Param("ew1") Long approveId);
 
     @Select("select student_id as id, u.name as name, start_time as week, course_title as courseName from absence a join user u on u.id = a.student_id join schedule s on a.schedule_id = s.id " +
-            "where course_id = ${courseId}")
+            "where course_id = #{courseId}")
     List<AbsenceDTO> getAbsence(@Param(value = "courseId") String courseId);
 
     String querySql3 = "SELECT\n" +
